@@ -10,7 +10,7 @@ import PieChart from '../app/components/PieChart';
 import LineChart from '../app/components/LineChart';
 import { notifyLowStock } from '../app/utils/notificationUtils';
 import { RootState } from './store/store';
-// import { RootState } from '../app/store'; // Adjust this import based on your store setup
+
 
 const Home = () => {
   const [showAddProductForm, setShowAddProductForm] = useState(false);

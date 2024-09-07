@@ -1,5 +1,3 @@
-// src/features/inventorySlice.ts
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Product {
@@ -26,16 +24,22 @@ const inventorySlice = createSlice({
     addProduct: (state, action: PayloadAction<Product>) => {
       state.products.push(action.payload);
     },
-    checkInventory: (state) => {
-      const lowStockNotifications = state.products
-        .filter(product => product.quantity < 5) // Adjust threshold as needed
-        .map(product => `Low stock for ${product.name}: ${product.quantity} left`);
-
-      state.notifications = lowStockNotifications;
+    updateProduct: (state, action: PayloadAction<Product>) => {
+      const index = state.products.findIndex(product => product.id === action.payload.id);
+      if (index !== -1) {
+        state.products[index] = action.payload;
+      }
     },
-    // Other reducers...
+    deleteProduct: (state, action: PayloadAction<string>) => {
+      state.products = state.products.filter(product => product.id !== action.payload);
+    },
+    checkInventory: (state) => {
+      state.notifications = state.products
+        .filter(product => product.quantity <= 5) // Example threshold for low stock
+        .map(product => `Low stock for product: ${product.name}`);
+    }
   },
 });
 
-export const { addProduct, checkInventory } = inventorySlice.actions;
+export const { addProduct, updateProduct, deleteProduct, checkInventory } = inventorySlice.actions;
 export default inventorySlice.reducer;
